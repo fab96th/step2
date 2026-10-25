@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>《复变函数》习题解答 · 阅读器</title>
+    <meta name="description" content="《复变函数》习题解答在线阅读器，基于 pdf.js。" />
+    <meta name="theme-color" content="#faf8f2" />
+    <script>
+      if (location.protocol === "file:") {
+        document.documentElement.classList.add("file-protocol");
+      }
+    </script>
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/viewer.css" />
+    <link rel="modulepreload" href="assets/vendor/pdfjs/pdf.min.mjs" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317211f'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23f6f2e8' font-family='Georgia,serif'%3E%E2%88%AE%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body class="viewer-body">
+    <div class="file-warning" id="fileWarning">
+      <div class="file-warning-card">
+        <h1>请通过本地服务器打开</h1>
+        <p>
+          你正在以 <code>file://</code> 方式直接打开此页面。出于安全限制，浏览器不允许页面读取本地 PDF，pdf.js 因此无法工作。
+        </p>
+        <p>
+          双击项目文件夹中的 <code>serve.command</code>，或在文件夹内运行
+          <code>python3 -m http.server 8000</code>，然后访问
+          <code>http://localhost:8000</code>。
+        </p>
+        <a class="btn-small primary" href="Latex.pdf">先下载 PDF</a>
+      </div>
+    </div>
+
+    <div class="app" id="app">
+      <header class="topbar" id="topbar">
+        <div class="tb-left">
+          <a class="icon-btn back-btn" href="index.html" title="返回首页" aria-label="返回首页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5" />
+              <path d="m11 18-6-6 6-6" />
+            </svg>
+          </a>
+          <button
+            class="icon-btn"
+            id="sidebarToggle"
+            type="button"
+            title="显示 / 隐藏页面缩略图"
+            aria-label="显示或隐藏页面缩略图"
+            aria-pressed="true"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M9.5 4v16" />
+            </svg>
+          </button>
+          <div class="doc-meta">
+            <span class="doc-title">《复变函数》习题解答</span>
+            <span class="doc-sub">PDF · 273 页 · 9.2 MB</span>
+          </div>
+        </div>
+
+        <div class="pager" role="group" aria-label="页码">
+          <button class="pager-btn" id="prevBtn" type="button" title="上一页（←）" aria-label="上一页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m14 6-6 6 6 6" />
+            </svg>
+          </button>
+          <input
+            class="page-input"
+            id="pageInput"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            spellcheck="false"
+            value="1"
+            aria-label="当前页码，输入后按回车跳转"
+            title="输入页码后按回车跳转"
+          />
+          <span class="page-total">/ <span id="pageTotal">—</span></span>
+          <button class="pager-btn" id="nextBtn" type="button" title="下一页（→）" aria-label="下一页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m10 6 6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="tb-right">
+          <div class="zoom-group" role="group" aria-label="缩放">
+            <button class="zoom-btn" id="zoomOut" type="button" title="缩小（-）" aria-label="缩小">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <path d="M5 12h14" />
+              </svg>
+            </button>
+            <button class="zoom-value" id="zoomValue" type="button" title="恢复适应宽度（0）" aria-label="当前缩放比例，点击恢复适应宽度">100%</button>
+            <button class="zoom-btn" id="zoomIn" type="button" title="放大（+）" aria-label="放大">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+              </svg>
+            </button>
+          </div>
+          <span class="tb-sep" aria-hidden="true"></span>
+          <a
+            class="icon-btn download-link"
+            href="Latex.pdf"
+            download="复变函数习题解答.pdf"
+            title="下载 PDF"
+            aria-label="下载 PDF"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12" />
+              <path d="m7 11 5 5 5-5" />
+              <path d="M5 21h14" />
+            </svg>
+          </a>
+          <button class="icon-btn fullscreen-btn" id="fullscreenBtn" type="button" title="全屏（F）" aria-label="全屏">
+            <svg id="fsIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+              <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+              <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+              <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="progress-rail" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="workspace">
+        <aside class="sidebar" id="sidebar" aria-label="页面缩略图">
+          <div class="sidebar-head">
+            <span>页面</span>
+            <span id="thumbCount">273</span>
+          </div>
+          <div class="thumbs" id="thumbs"></div>
+        </aside>
+
+        <div class="viewport">
+          <div class="scroller" id="scroller" tabindex="0">
+            <div class="pages" id="pages"></div>
+          </div>
+
+          <button class="to-top" id="toTop" type="button" aria-label="回到第一页" title="回到顶部">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 19V5" />
+              <path d="m6 11 6-6 6 6" />
+            </svg>
+          </button>
+
+          <div class="load-overlay" id="loadOverlay">
+            <div class="loader" id="loader">
+              <div class="spinner" aria-hidden="true"></div>
+              <p class="load-title">正在加载文档…</p>
+              <div class="load-bar"><span id="loadBar"></span></div>
+              <p class="load-pct" id="loadPct">0%</p>
+            </div>
+
+            <div class="load-error" id="loadError" hidden>
+              <div class="error-icon" aria-hidden="true">!</div>
+              <h2>无法加载 PDF</h2>
+              <p id="errMsg">获取 PDF 文件失败，请稍后重试。</p>
+              <p class="hint">
+                如果你直接双击打开了 HTML 文件，浏览器会阻止读取本地 PDF。请双击项目中的 <code>serve.command</code>，或运行 <code>python3 -m http.server 8000</code> 后访问 <code>http://localhost:8000</code>。
+              </p>
+              <div class="error-actions">
+                <a class="btn-small primary" href="Latex.pdf" download="复变函数习题解答.pdf">下载 PDF</a>
+                <a class="btn-small" href="index.html">返回首页</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="backdrop" id="backdrop"></div>
+      <p class="visually-hidden" id="pageStatus" aria-live="polite"></p>
+    </div>
+
+    <noscript>
+      <div class="file-warning" style="display: grid">
+        <div class="file-warning-card">
+          <h1>需要启用 JavaScript</h1>
+          <p>在线阅读器基于 pdf.js，需要启用 JavaScript 才能运行。</p>
+          <a class="btn-small" href="Latex.pdf">直接下载 PDF</a>
+        </div>
+      </div>
+    </noscript>
+
+    <script type="module" src="assets/js/viewer.js"></script>
+  </body>
+</html>
